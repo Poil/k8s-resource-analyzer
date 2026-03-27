@@ -1,0 +1,956 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 0,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [],
+      "repeat": "cluster",
+      "title": "$cluster",
+      "type": "row"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Avg (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Max (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Limit (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Request"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Avg"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Max"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Limit"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Request"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*Req\\/Max Ratio/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 2
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Max (Cores)"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "instant": true,
+          "refId": "REQ_CPU"
+        },
+        {
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        },
+        {
+          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "instant": true,
+          "refId": "REQ_MEM"
+        },
+        {
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "instant": true,
+          "refId": "F"
+        }
+      ],
+      "title": "Historical CPU & Memory Baseline ($long_period)",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "CPU Req/Max Ratio",
+            "binary": {
+              "left": "Value #REQ_CPU",
+              "operator": "/",
+              "right": "Value #B"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mem Req/Max Ratio",
+            "binary": {
+              "left": "Value #REQ_MEM",
+              "operator": "/",
+              "right": "Value #D"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Value #A": "CPU Avg (Cores)",
+              "Value #B": "CPU Max (Cores)",
+              "Value #C": "Memory Avg",
+              "Value #D": "Memory Max",
+              "Value #E": "CPU Limit (Cores)",
+              "Value #F": "Memory Limit",
+              "Value #REQ_CPU": "CPU Request",
+              "Value #REQ_MEM": "Memory Request"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 300
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "min by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_cpu_cores_min{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Min - {{container}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Avg - {{container}}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Max - {{container}}",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "legendFormat": "Sum - {{container}}",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "CPU Cores Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 300
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "min by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_memory_bytes_min{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Min - {{container}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Avg - {{container}}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "hide": true,
+          "legendFormat": "Max - {{container}}",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_memory_bytes_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "legendFormat": "Sum - {{container}}",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Memory Bytes Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "dash"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1W Average Baseline - .*"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 300
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, container) (kube_workload_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "legendFormat": "Actual CPU Sum - {{container}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, container) (kube_workload_container_resource_usage_cpu_cores_sum:avg_over_time_1w{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"})",
+          "legendFormat": "1W Average Baseline - {{container}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "CPU 1-Week Prediction vs Actual",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "expr": "kube_workload_container_resource_usage_memory_oom_killed{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}",
+          "legendFormat": "{{cluster}} / {{container}}",
+          "refId": "A"
+        }
+      ],
+      "title": "OOM Killed Events",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "1m",
+  "schemaVersion": 42,
+  "tags": [
+    "kubernetes",
+    "optimization",
+    "multi-cluster"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
+        "includeAll": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "7d",
+          "value": "7d"
+        },
+        "name": "long_period",
+        "options": [
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "3d",
+            "value": "3d"
+          },
+          {
+            "selected": true,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1d, 3d, 7d, 14d, 30d",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": "label_values(kube_workload_container_resource_usage_cpu_cores_sum, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "observability"
+          ],
+          "value": [
+            "observability"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": "label_values(kube_workload_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\"}, namespace)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "prometheus-kube-prometheus-prometheus",
+            "prometheus-kube-prometheus-prometheus-shard-1",
+            "prometheus-kube-prometheus-prometheus-shard-2",
+            "prometheus-kube-prometheus-prometheus-shard-3"
+          ],
+          "value": [
+            "prometheus-kube-prometheus-prometheus",
+            "prometheus-kube-prometheus-prometheus-shard-1",
+            "prometheus-kube-prometheus-prometheus-shard-2",
+            "prometheus-kube-prometheus-prometheus-shard-3"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "workload",
+        "options": [],
+        "query": "label_values(kube_workload_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}, workload)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "container",
+        "options": [],
+        "query": "label_values(kube_workload_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\"}, container)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "k8soptimizer Resource Dashboard",
+  "uid": "k8soptimizer-metrics-cluster",
+  "version": 9
+}
