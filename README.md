@@ -2,6 +2,8 @@
 
 A complete observability stack to help you "right-size" your Kubernetes workloads. This repository contains heavily optimized Prometheus recording rules and a highly visual Grafana dashboard designed to instantly highlight CPU and Memory waste across multiple clusters.
 
+![k8s-resource-analyzer dashboard screenshot](dashboards/k8s-resource-analyzer-dashboard.png)
+
 **Acknowledgments:**
 > The Prometheus recording rules in this repository build upon the foundation provided by [arvatoaws-labs/k8soptimizer](https://github.com/arvatoaws-labs/k8soptimizer) project. We have adapted them for Thanos compatibility and multi-cluster environments.
 
@@ -33,8 +35,6 @@ Update the metadata.labels in the prometheus-rules.yaml file to match that outpu
 ```bash
 kubectl apply -f rules/prometheus-rules.yaml
 ```
-
- Gemini said
 
 Here is a complete, ready-to-use README.md file for your repository. It includes the exact reference to the original k8soptimizer project, explains the features you built, and explicitly highlights the ruleSelector label trap we successfully debugged!
 
