@@ -256,6 +256,30 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "workload"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 243
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Container"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 219
+              }
+            ]
           }
         ]
       },
@@ -286,100 +310,222 @@
           "refId": "A"
         },
         {
-          "expr": "max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > $min_cpu_investigation_cores",
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "B"
         },
         {
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) > $min_cpu_investigation_cores",
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
           "format": "table",
           "instant": true,
           "refId": "REQ_CPU"
         },
         {
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) > $min_cpu_investigation_cores",
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
           "format": "table",
           "instant": true,
           "refId": "E"
         },
         {
+          "editorMode": "code",
           "expr": "avg(avg_over_time(kube_workload_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "C"
         },
         {
-          "expr": "max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > $min_memory_investigation_bytes",
+          "editorMode": "code",
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "D"
         },
         {
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) > $min_memory_investigation_bytes",
+          "editorMode": "code",
+          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
           "format": "table",
           "instant": true,
           "refId": "REQ_MEM"
         },
         {
+          "editorMode": "code",
           "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
           "format": "table",
           "instant": true,
           "refId": "F"
+        },
+        {
+          "editorMode": "code",
+          "expr": "(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))\n  /\n  (max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > 0)\n)\nOR on(cluster, namespace, workload, container)\n(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) * 0\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "G"
+        },
+        {
+          "editorMode": "code",
+          "expr": "(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))\n  /\n  (max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > 0)\n)\nOR on(cluster, namespace, workload, container)\n(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) * 0\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "H"
         }
       ],
       "title": "Historical CPU & Memory Baseline ($long_period)",
       "transformations": [
         {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "calculateField",
+          "id": "joinByField",
           "options": {
-            "alias": "CPU Req/Max Ratio",
-            "binary": {
-              "left": "Value #REQ_CPU",
-              "operator": "/",
-              "right": "Value #B"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mem Req/Max Ratio",
-            "binary": {
-              "left": "Value #REQ_MEM",
-              "operator": "/",
-              "right": "Value #D"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
+            "byField": "container",
+            "mode": "outer"
           }
         },
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "Time 1": true,
+              "Time 10": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Time 9": true,
+              "Value #C": false,
+              "cluster 1": false,
+              "cluster 10": true,
+              "cluster 2": true,
+              "cluster 3": true,
+              "cluster 4": true,
+              "cluster 5": true,
+              "cluster 6": true,
+              "cluster 7": true,
+              "cluster 8": true,
+              "cluster 9": true,
+              "namespace 1": false,
+              "namespace 10": true,
+              "namespace 2": true,
+              "namespace 3": true,
+              "namespace 4": true,
+              "namespace 5": true,
+              "namespace 6": true,
+              "namespace 7": true,
+              "namespace 8": true,
+              "namespace 9": true,
+              "workload 1": false,
+              "workload 10": true,
+              "workload 2": true,
+              "workload 3": true,
+              "workload 4": true,
+              "workload 5": true,
+              "workload 6": true,
+              "workload 7": true,
+              "workload 8": true,
+              "workload 9": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 4,
+              "Time 10": 46,
+              "Time 2": 6,
+              "Time 3": 11,
+              "Time 4": 16,
+              "Time 5": 21,
+              "Time 6": 26,
+              "Time 7": 31,
+              "Time 8": 36,
+              "Time 9": 41,
+              "Value #A": 5,
+              "Value #B": 10,
+              "Value #C": 25,
+              "Value #D": 30,
+              "Value #E": 20,
+              "Value #F": 40,
+              "Value #G": 45,
+              "Value #H": 50,
+              "Value #REQ_CPU": 15,
+              "Value #REQ_MEM": 35,
+              "cluster 1": 0,
+              "cluster 10": 47,
+              "cluster 2": 7,
+              "cluster 3": 12,
+              "cluster 4": 17,
+              "cluster 5": 22,
+              "cluster 6": 27,
+              "cluster 7": 32,
+              "cluster 8": 37,
+              "cluster 9": 42,
+              "container": 3,
+              "namespace 1": 1,
+              "namespace 10": 48,
+              "namespace 2": 8,
+              "namespace 3": 13,
+              "namespace 4": 18,
+              "namespace 5": 23,
+              "namespace 6": 28,
+              "namespace 7": 33,
+              "namespace 8": 38,
+              "namespace 9": 43,
+              "workload 1": 2,
+              "workload 10": 49,
+              "workload 2": 9,
+              "workload 3": 14,
+              "workload 4": 19,
+              "workload 5": 24,
+              "workload 6": 29,
+              "workload 7": 34,
+              "workload 8": 39,
+              "workload 9": 44
             },
             "renameByName": {
+              "Time 2": "",
               "Value #A": "CPU Avg (Cores)",
               "Value #B": "CPU Max (Cores)",
               "Value #C": "Memory Avg",
               "Value #D": "Memory Max",
               "Value #E": "CPU Limit (Cores)",
               "Value #F": "Memory Limit",
+              "Value #G": "CPU Req/Max Ratio",
+              "Value #H": "Mem Req/Max Ratio",
               "Value #REQ_CPU": "CPU Request",
-              "Value #REQ_MEM": "Memory Request"
+              "Value #REQ_MEM": "Memory Request",
+              "cluster 1": "Cluster",
+              "container": "Container",
+              "namespace 1": "Namespace",
+              "workload 1": "Workload"
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": "${min_cpu_requests}"
+                  }
+                },
+                "fieldName": "CPU Request"
+              },
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": "${min_memory_investigation_bytes}"
+                  }
+                },
+                "fieldName": "Memory Request"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
           }
         }
       ],
@@ -866,9 +1012,11 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": "All",
+          "text": [
+            "tools-eu-west-3-eks"
+          ],
           "value": [
-            "$__all"
+            "tools-eu-west-3-eks"
           ]
         },
         "datasource": "${datasource}",
@@ -886,10 +1034,10 @@
         "allowCustomValue": false,
         "current": {
           "text": [
-            "All"
+            "observability"
           ],
           "value": [
-            "$__all"
+            "observability"
           ]
         },
         "datasource": "${datasource}",
@@ -926,7 +1074,9 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": "$__all"
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "${datasource}",
         "includeAll": true,
@@ -940,13 +1090,14 @@
       },
       {
         "current": {
-          "text": "1073741824",
-          "value": "1073741824"
+          "text": "0",
+          "value": "0"
         },
+        "label": "Minimum Memory requests",
         "name": "min_memory_investigation_bytes",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "0 (All)",
             "value": "0"
           },
@@ -961,7 +1112,7 @@
             "value": "536870912"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "1024MiB",
             "value": "1073741824"
           },
@@ -976,10 +1127,11 @@
       },
       {
         "current": {
-          "text": "0 (All)",
+          "text": "0",
           "value": "0"
         },
-        "name": "min_cpu_investigation_cores",
+        "label": "Minimum CPU requests",
+        "name": "min_cpu_requests",
         "options": [
           {
             "selected": true,
@@ -988,26 +1140,31 @@
           },
           {
             "selected": false,
-            "text": "0.01 Cores",
+            "text": "0.01",
             "value": "0.01"
           },
           {
             "selected": false,
-            "text": "0.10 Cores",
+            "text": "0.10",
             "value": "0.10"
           },
           {
             "selected": false,
-            "text": "0.50 Cores",
+            "text": "0.25",
+            "value": "0.35"
+          },
+          {
+            "selected": false,
+            "text": "0.50",
             "value": "0.50"
           },
           {
             "selected": false,
-            "text": "1 Core",
+            "text": "1",
             "value": "1"
           }
         ],
-        "query": "0 (All) : 0, 0.01 Cores : 0.01, 0.10 Cores : 0.10, 0.50 Cores : 0.50, 1 Core : 1",
+        "query": "0 (All) : 0, 0.01 : 0.01, 0.10 : 0.10, 0.25 : 0.35, 0.50 : 0.50, 1 : 1",
         "type": "custom"
       }
     ]
@@ -1020,5 +1177,5 @@
   "timezone": "browser",
   "title": "k8soptimizer Resource Dashboard",
   "uid": "k8soptimizer-metrics-cluster",
-  "version": 16
+  "version": 29
 }
