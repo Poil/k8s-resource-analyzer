@@ -338,14 +338,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_CPU"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "E"
@@ -366,14 +366,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"memory\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_MEM"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"memory\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "F"
@@ -640,7 +640,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 252
+            "y": 476
           },
           "id": 1,
           "options": {
@@ -757,7 +757,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 263
+            "y": 487
           },
           "id": 2,
           "options": {
@@ -899,7 +899,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 273
+            "y": 497
           },
           "id": 4,
           "options": {
@@ -964,7 +964,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 283
+            "y": 507
           },
           "id": 5,
           "options": {
@@ -1059,9 +1059,7 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1080,9 +1078,7 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1101,7 +1097,9 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": "All",
+          "text": [
+            "All"
+          ],
           "value": [
             "$__all"
           ]
@@ -1239,5 +1237,5 @@
   "timezone": "browser",
   "title": "k8soptimizer Resource Dashboard",
   "uid": "bdgfnps",
-  "version": 8
+  "version": 10
 }
