@@ -280,6 +280,18 @@
                 "value": 219
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Workload"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 381
+              }
+            ]
           }
         ]
       },
@@ -296,77 +308,79 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Mem Req/Max Ratio"
+            "desc": false,
+            "displayName": "Workload"
           }
         ]
       },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "editorMode": "code",
+          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "A"
         },
         {
-          "expr": "max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "editorMode": "code",
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "B"
         },
         {
           "editorMode": "code",
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_CPU"
         },
         {
           "editorMode": "code",
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "E"
         },
         {
           "editorMode": "code",
-          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "expr": "avg(avg_over_time(kube_workload_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "C"
         },
         {
           "editorMode": "code",
-          "expr": "max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container)",
+          "expr": "max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container)",
           "format": "table",
           "instant": true,
           "refId": "D"
         },
         {
           "editorMode": "code",
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_MEM"
         },
         {
           "editorMode": "code",
-          "expr": "max by (cluster, namespace, workload, container) (kube_pod_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))",
+          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
           "format": "table",
           "instant": true,
           "refId": "F"
         },
         {
           "editorMode": "code",
-          "expr": "(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))\n  /\n  (max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > 0)\n)\nOR on(cluster, namespace, workload, container)\n(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) * 0\n)",
+          "expr": "(\n  max by (namespace, workload, container) (\n    kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", } \n    * on(cluster, namespace, pod) group_left(workload) \n    label_replace(\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\"}), \n      \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n    )\n  )\n  / ignoring(cluster)\n  (max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container) > 0)\n)",
           "format": "table",
           "instant": true,
           "refId": "G"
         },
         {
           "editorMode": "code",
-          "expr": "(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"}))\n  /\n  (max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}[$long_period])) by (cluster, namespace, workload, container) > 0)\n)\nOR on(cluster, namespace, workload, container)\n(\n  max by (cluster, namespace, workload, container) (kube_pod_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", container=~\"$container\"} * on(cluster, namespace, pod) group_left(workload) max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{cluster=~\"$cluster\", namespace=~\"$namespace\"})) * 0\n)",
+          "expr": "(\n  max by (namespace, workload, container) (\n    kube_pod_container_resource_requests{resource=\"memory\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\",} \n    * on(cluster, namespace, pod) group_left(workload) \n    label_replace(\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\"}), \n      \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n    )\n  )\n  / ignoring(cluster)\n  (max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, workload, container) > 0)\n)",
           "format": "table",
           "instant": true,
           "refId": "H"
@@ -375,11 +389,8 @@
       "title": "Historical CPU & Memory Baseline ($long_period)",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {
-            "byField": "container",
-            "mode": "outer"
-          }
+          "id": "merge",
+          "options": {}
         },
         {
           "id": "organize",
@@ -397,7 +408,8 @@
               "Time 8": true,
               "Time 9": true,
               "Value #C": false,
-              "cluster 1": false,
+              "cluster": true,
+              "cluster 1": true,
               "cluster 10": true,
               "cluster 2": true,
               "cluster 3": true,
@@ -407,6 +419,18 @@
               "cluster 7": true,
               "cluster 8": true,
               "cluster 9": true,
+              "container": false,
+              "container 1": false,
+              "container 10": true,
+              "container 2": true,
+              "container 3": true,
+              "container 4": true,
+              "container 5": true,
+              "container 6": true,
+              "container 7": true,
+              "container 8": true,
+              "container 9": true,
+              "namespace": false,
               "namespace 1": false,
               "namespace 10": true,
               "namespace 2": true,
@@ -417,6 +441,7 @@
               "namespace 7": true,
               "namespace 8": true,
               "namespace 9": true,
+              "workload": false,
               "workload 1": false,
               "workload 10": true,
               "workload 2": true,
@@ -430,58 +455,59 @@
             },
             "includeByName": {},
             "indexByName": {
-              "Time 1": 4,
-              "Time 10": 46,
-              "Time 2": 6,
-              "Time 3": 11,
+              "Time 1": 9,
+              "Time 10": 36,
+              "Time 2": 10,
+              "Time 3": 13,
               "Time 4": 16,
-              "Time 5": 21,
-              "Time 6": 26,
-              "Time 7": 31,
-              "Time 8": 36,
-              "Time 9": 41,
-              "Value #A": 5,
-              "Value #B": 10,
-              "Value #C": 25,
-              "Value #D": 30,
-              "Value #E": 20,
-              "Value #F": 40,
-              "Value #G": 45,
-              "Value #H": 50,
-              "Value #REQ_CPU": 15,
-              "Value #REQ_MEM": 35,
+              "Time 5": 19,
+              "Time 6": 22,
+              "Time 7": 25,
+              "Time 8": 28,
+              "Time 9": 32,
+              "Value #A": 2,
+              "Value #B": 3,
+              "Value #C": 6,
+              "Value #D": 7,
+              "Value #E": 5,
+              "Value #F": 31,
+              "Value #G": 35,
+              "Value #H": 39,
+              "Value #REQ_CPU": 4,
+              "Value #REQ_MEM": 8,
               "cluster 1": 0,
-              "cluster 10": 47,
-              "cluster 2": 7,
-              "cluster 3": 12,
+              "cluster 10": 37,
+              "cluster 2": 11,
+              "cluster 3": 14,
               "cluster 4": 17,
-              "cluster 5": 22,
-              "cluster 6": 27,
-              "cluster 7": 32,
-              "cluster 8": 37,
-              "cluster 9": 42,
-              "container": 3,
+              "cluster 5": 20,
+              "cluster 6": 23,
+              "cluster 7": 26,
+              "cluster 8": 29,
+              "cluster 9": 33,
+              "container": 40,
               "namespace 1": 1,
-              "namespace 10": 48,
-              "namespace 2": 8,
-              "namespace 3": 13,
+              "namespace 10": 38,
+              "namespace 2": 12,
+              "namespace 3": 15,
               "namespace 4": 18,
-              "namespace 5": 23,
-              "namespace 6": 28,
-              "namespace 7": 33,
-              "namespace 8": 38,
-              "namespace 9": 43,
-              "workload 1": 2,
-              "workload 10": 49,
-              "workload 2": 9,
-              "workload 3": 14,
-              "workload 4": 19,
-              "workload 5": 24,
-              "workload 6": 29,
-              "workload 7": 34,
-              "workload 8": 39,
-              "workload 9": 44
+              "namespace 5": 21,
+              "namespace 6": 24,
+              "namespace 7": 27,
+              "namespace 8": 30,
+              "namespace 9": 34,
+              "workload 1": 41,
+              "workload 10": 50,
+              "workload 2": 42,
+              "workload 3": 43,
+              "workload 4": 44,
+              "workload 5": 45,
+              "workload 6": 46,
+              "workload 7": 47,
+              "workload 8": 48,
+              "workload 9": 49
             },
+            "orderByMode": "auto",
             "renameByName": {
               "Time 2": "",
               "Value #A": "CPU Avg (Cores)",
@@ -496,7 +522,10 @@
               "Value #REQ_MEM": "Memory Request",
               "cluster 1": "Cluster",
               "container": "Container",
+              "container 1": "Container",
+              "namespace": "Namespace",
               "namespace 1": "Namespace",
+              "workload": "Workload",
               "workload 1": "Workload"
             }
           }
@@ -537,7 +566,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 224
+        "y": 238
       },
       "id": 7,
       "panels": [
@@ -604,7 +633,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 225
+            "y": 239
           },
           "id": 1,
           "options": {
@@ -721,7 +750,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 236
+            "y": 250
           },
           "id": 2,
           "options": {
@@ -863,7 +892,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 246
+            "y": 260
           },
           "id": 4,
           "options": {
@@ -928,7 +957,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 256
+            "y": 270
           },
           "id": 5,
           "options": {
@@ -968,11 +997,7 @@
   "preload": false,
   "refresh": "1m",
   "schemaVersion": 42,
-  "tags": [
-    "kubernetes",
-    "optimization",
-    "multi-cluster"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
@@ -1204,6 +1229,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "k8soptimizer Resource Dashboard",
-  "uid": "k8soptimizer-metrics-cluster",
-  "version": 31
+  "uid": "bdgfnps",
+  "version": 6
 }
