@@ -245,6 +245,18 @@
                       "value": 0
                     },
                     {
+                      "color": "super-light-blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1.2
+                    },
+                    {
                       "color": "orange",
                       "value": 1.5
                     },
@@ -306,12 +318,7 @@
         "cellHeight": "sm",
         "enablePagination": true,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Workload"
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "12.3.1",
       "targets": [
@@ -633,7 +640,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 239
+            "y": 252
           },
           "id": 1,
           "options": {
@@ -750,7 +757,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 250
+            "y": 263
           },
           "id": 2,
           "options": {
@@ -892,7 +899,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 260
+            "y": 273
           },
           "id": 4,
           "options": {
@@ -957,7 +964,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 270
+            "y": 283
           },
           "id": 5,
           "options": {
@@ -1073,7 +1080,9 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": "All",
+          "text": [
+            "All"
+          ],
           "value": [
             "$__all"
           ]
@@ -1230,5 +1239,5 @@
   "timezone": "browser",
   "title": "k8soptimizer Resource Dashboard",
   "uid": "bdgfnps",
-  "version": 6
+  "version": 8
 }
