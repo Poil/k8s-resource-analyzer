@@ -8,42 +8,85 @@ metadata:
   name: pod.rules
 spec:
   groups:
+  # ===============================================================
   # GROUP 1: 1-Minute Interval (Real-time usage and specs)
+  # Excludes gitlab-runner to prevent cardinality explosion
+  # ===============================================================
   - name: pod-record.rules
     interval: 1m
     rules:
     - record: kube_workload_container_resource_usage_cpu_cores_max
-      expr: max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
+      expr: max(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace!="gitlab-runner"} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
 
     - record: kube_workload_container_resource_usage_cpu_cores_sum
-      expr: sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
+      expr: sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace!="gitlab-runner"} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
 
     - record: kube_workload_container_resource_usage_memory_bytes_max
-      expr: max(container_memory_working_set_bytes * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
+      expr: max(container_memory_working_set_bytes{namespace!="gitlab-runner"} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
 
     - record: kube_workload_container_resource_usage_memory_oom_killed
-      expr: sum(kube_pod_container_status_terminated_reason{job="kube-state-metrics", reason="OOMKilled"} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
+      expr: sum(kube_pod_container_status_terminated_reason{job="kube-state-metrics", reason="OOMKilled", namespace!="gitlab-runner"} * on(namespace,pod) group_left(workload, workload_type) max(namespace_workload_pod:kube_pod_owner:relabel{}) by (namespace, pod, workload, workload_type)) by (namespace, workload, workload_type, container)
 
     - record: kube_workload_container_resource_requests
       expr: |
         max by (cluster, namespace, workload, container, resource) (
-          kube_pod_container_resource_requests
+          kube_pod_container_resource_requests{namespace!="gitlab-runner"}
           * on(cluster, namespace, pod) group_left(workload)
           max by (cluster, namespace, pod, workload) (namespace_workload_pod:kube_pod_owner:relabel{})
         )
 
-  # GROUP 2: 1-Hour Interval (Heavy 7-day historical scans)
+  # ===============================================================
+  # GROUP 2: CI/CD GitLab Runner Metrics (1m interval)
+  # Purpose: Groups ephemeral pods by Project and Job Name
+  # ===============================================================
+  - name: gitlab-runner-record.rules
+    interval: 1m
+    rules:
+    - record: gitlab_job_container_resource_usage_cpu_cores_max
+      expr: |
+        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+          node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="gitlab-runner"}
+          * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name)
+          kube_pod_labels{label_gitlab_job_name!=""}
+        )
+
+    - record: gitlab_job_container_resource_usage_memory_bytes_max
+      expr: |
+        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+          container_memory_working_set_bytes{namespace="gitlab-runner", container!=""}
+          * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name)
+          kube_pod_labels{label_gitlab_job_name!=""}
+        )
+
+    - record: gitlab_job_container_resource_requests
+      expr: |
+        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container, resource) (
+          kube_pod_container_resource_requests{namespace="gitlab-runner"}
+          * on(cluster, namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name)
+          kube_pod_labels{label_gitlab_job_name!=""}
+        )
+
+  # ===============================================================
+  # GROUP 3: 1-Hour Interval (Heavy 7-day historical scans)
+  # ===============================================================
   - name: pod-historical-aggregations.rules
     interval: 1h
     rules:
-    # 7-day Max for the AI Optimizer (Pre-calculated to prevent script timeouts)
+    # --- Standard Workload 7-day Max ---
     - record: kube_workload_container_resource_usage_cpu_cores_max:1w
       expr: max_over_time(kube_workload_container_resource_usage_cpu_cores_max[1w])
 
     - record: kube_workload_container_resource_usage_memory_bytes_max:1w
       expr: max_over_time(kube_workload_container_resource_usage_memory_bytes_max[1w])
 
-    # Your original Prediction names (Restored to fix dashboard "stops")
+    # --- GitLab Job 7-day Max (For optimizing CI/CD costs) ---
+    - record: gitlab_job_container_resource_usage_cpu_cores_max:1w
+      expr: max_over_time(gitlab_job_container_resource_usage_cpu_cores_max[1w])
+
+    - record: gitlab_job_container_resource_usage_memory_bytes_max:1w
+      expr: max_over_time(gitlab_job_container_resource_usage_memory_bytes_max[1w])
+
+    # --- Original Prediction names ---
     - record: kube_workload_container_resource_usage_cpu_cores_sum:avg_over_time_1w
       expr: avg_over_time(kube_workload_container_resource_usage_cpu_cores_sum[1w])
 

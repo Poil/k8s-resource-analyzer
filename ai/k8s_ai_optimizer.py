@@ -157,7 +157,7 @@ def get_ai_recommendations(metrics_data):
     {csv_payload}
 
     CRITICAL INSTRUCTIONS:
-    1. Analyze the data but ONLY output the Top 10 most critical containers that need tuning (prioritize highest wasted cost / over-provisioning, or highest OOM kill risk).
+    1. Analyze the data but ONLY output the Top 30 most critical containers that need tuning (prioritize highest wasted cost / over-provisioning, or highest OOM kill risk).
     2. Format your entire response as a SINGLE Markdown table. Do not write introductory or concluding paragraphs.
     3. Use the following columns: Cluster | Namespace | Workload | Container | New CPU Req | New Mem Limit | Reason
     4. Keep the 'Reason' column to a maximum of 5 words.
