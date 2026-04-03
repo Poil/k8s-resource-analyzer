@@ -1,0 +1,1173 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [],
+      "repeat": "cluster",
+      "title": "$cluster",
+      "type": "row"
+    },
+    {
+      "datasource": "${datasource}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Avg (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Max (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Limit (Cores)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Request"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Avg"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Max"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Limit"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Request"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*Req\\/Max Ratio/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "super-light-blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 1
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1.2
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 2
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GitLab Project"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 243
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Container"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 219
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Job Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 187
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Mem Req/Max Ratio"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg(avg_over_time(gitlab_job_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max(max_over_time(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "REQ_CPU"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg(avg_over_time(gitlab_job_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max(max_over_time(gitlab_job_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "REQ_MEM"
+        },
+        {
+          "editorMode": "code",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "F"
+        },
+        {
+          "editorMode": "code",
+          "expr": "(\n  max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n    max_over_time(gitlab_job_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n  )\n  /\n  (max(max_over_time(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container) > 0)\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "G"
+        },
+        {
+          "editorMode": "code",
+          "expr": "(\n  max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n    max_over_time(gitlab_job_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n  )\n  /\n  (max(max_over_time(gitlab_job_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\", container!=\"\"}[$long_period])) by (namespace, label_gitlab_project, label_gitlab_job_name, container) > 0)\n)",
+          "format": "table",
+          "instant": true,
+          "refId": "H"
+        }
+      ],
+      "title": "Historical CPU & Memory Baseline ($long_period) - GitLab Runners",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 10": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Time 9": true,
+              "__name__": true,
+              "cluster": true,
+              "container": false,
+              "namespace": false,
+              "label_gitlab_project": false,
+              "label_gitlab_job_name": false,
+              "resource": true,
+              "thanos_ruler_replica": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderByMode": "auto",
+            "renameByName": {
+              "Value #A": "CPU Avg (Cores)",
+              "Value #B": "CPU Max (Cores)",
+              "Value #C": "Memory Avg",
+              "Value #D": "Memory Max",
+              "Value #E": "CPU Limit (Cores)",
+              "Value #F": "Memory Limit",
+              "Value #G": "CPU Req/Max Ratio",
+              "Value #H": "Mem Req/Max Ratio",
+              "Value #REQ_CPU": "CPU Request",
+              "Value #REQ_MEM": "Memory Request",
+              "container": "Container",
+              "namespace": "Namespace",
+              "label_gitlab_project": "GitLab Project",
+              "label_gitlab_job_name": "Job Name"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": "${min_cpu_requests}"
+                  }
+                },
+                "fieldName": "CPU Request"
+              },
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": "${min_memory_investigation_bytes}"
+                  }
+                },
+                "fieldName": "Memory Request"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 238
+      },
+      "id": 7,
+      "panels": [
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 700
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 300
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "min by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_cpu_cores_min{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Min - {{container}}",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "editorMode": "code",
+              "expr": "avg by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_cpu_cores_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Avg - {{container}}",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "editorMode": "code",
+              "expr": "max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Max - {{container}}",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "editorMode": "code",
+              "expr": "sum by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "legendFormat": "Sum - {{container}}",
+              "range": true,
+              "refId": "D"
+            }
+          ],
+          "title": "CPU Cores Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 711
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 300
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "min by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_memory_bytes_min{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Min - {{container}}",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "editorMode": "code",
+              "expr": "avg by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_memory_bytes_avg{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Avg - {{container}}",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "editorMode": "code",
+              "expr": "max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_memory_bytes_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "hide": true,
+              "legendFormat": "Max - {{container}}",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "editorMode": "code",
+              "expr": "sum by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (gitlab_job_container_resource_usage_memory_bytes_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "legendFormat": "Sum - {{container}}",
+              "range": true,
+              "refId": "D"
+            }
+          ],
+          "title": "Memory Bytes Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "dash"
+                },
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "1W Average Baseline - .*"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineStyle",
+                    "value": {
+                      "fill": "dash"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 721
+          },
+          "id": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 300
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "editorMode": "code",
+              "expr": "max by (cluster, namespace, container) (gitlab_job_container_resource_usage_cpu_cores_sum{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "legendFormat": "Actual CPU Sum - {{container}}",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "editorMode": "code",
+              "expr": "max by (cluster, namespace, container) (gitlab_job_container_resource_usage_cpu_cores_sum:avg_over_time_1w{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"})",
+              "legendFormat": "1W Average Baseline - {{container}}",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "CPU 1-Week Prediction vs Actual",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 731
+          },
+          "id": 5,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "expr": "gitlab_job_container_resource_usage_memory_oom_killed{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}",
+              "legendFormat": "{{cluster}} / {{container}}",
+              "refId": "A"
+            }
+          ],
+          "title": "OOM Killed Events",
+          "type": "stat"
+        }
+      ],
+      "repeat": "cluster",
+      "title": "Usage Graphs for $cluster",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "1m",
+  "schemaVersion": 42,
+  "tags": [
+    "gitlab-runner",
+    "k8soptimizer"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
+        "includeAll": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "7d",
+          "value": "7d"
+        },
+        "name": "long_period",
+        "options": [
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "3d",
+            "value": "3d"
+          },
+          {
+            "selected": true,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1d, 3d, 7d, 14d, 30d",
+        "type": "custom"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": "label_values(gitlab_job_container_resource_usage_cpu_cores_max, cluster)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": "label_values(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\"}, namespace)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "project",
+        "options": [],
+        "query": "label_values(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\"}, label_gitlab_project)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "job_name",
+        "options": [],
+        "query": "label_values(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\"}, label_gitlab_job_name)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${datasource}",
+        "includeAll": true,
+        "multi": true,
+        "name": "container",
+        "options": [],
+        "query": "label_values(gitlab_job_container_resource_usage_cpu_cores_max{cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\"}, container)",
+        "refresh": 1,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "label": "Minimum Memory requests",
+        "name": "min_memory_investigation_bytes",
+        "options": [
+          {
+            "selected": true,
+            "text": "0 (All)",
+            "value": "0"
+          },
+          {
+            "selected": false,
+            "text": "256MiB",
+            "value": "268435456"
+          },
+          {
+            "selected": false,
+            "text": "512MiB",
+            "value": "536870912"
+          },
+          {
+            "selected": false,
+            "text": "1024MiB",
+            "value": "1073741824"
+          },
+          {
+            "selected": false,
+            "text": "2048MiB",
+            "value": "2147483648"
+          }
+        ],
+        "query": "0 (All) : 0, 256MiB : 268435456, 512MiB : 536870912, 1024MiB : 1073741824, 2048MiB : 2147483648",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "label": "Minimum CPU requests",
+        "name": "min_cpu_requests",
+        "options": [
+          {
+            "selected": true,
+            "text": "0 (All)",
+            "value": "0"
+          },
+          {
+            "selected": false,
+            "text": "0.01",
+            "value": "0.01"
+          },
+          {
+            "selected": false,
+            "text": "0.10",
+            "value": "0.10"
+          },
+          {
+            "selected": false,
+            "text": "0.25",
+            "value": "0.35"
+          },
+          {
+            "selected": false,
+            "text": "0.50",
+            "value": "0.50"
+          },
+          {
+            "selected": false,
+            "text": "0.100",
+            "value": "0.100"
+          },
+          {
+            "selected": false,
+            "text": "0.250",
+            "value": "0.250"
+          },
+          {
+            "selected": false,
+            "text": "0.500",
+            "value": "0.500"
+          },
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          }
+        ],
+        "query": "0 (All) : 0, 0.01 : 0.01, 0.10 : 0.10, 0.25 : 0.35, 0.50 : 0.50, 0.100 : 0.100, 0.250 : 0.250, 0.500 : 0.500, 1 : 1",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "k8soptimizer GitLab Runner Dashboard",
+  "uid": "bdgfnps-gitlab",
+  "version": 1
+}
