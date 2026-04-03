@@ -21,6 +21,7 @@ A complete observability and automation stack to help you "right-size" your Kube
 
 ## 🚀 Installation & Setup
 
+
 ### 1. Deploy the Prometheus Rules
 To make the dashboard and AI script work, Prometheus needs to calculate the historical data. Apply the `prometheus-rules.yaml` file to your cluster.
 
@@ -36,6 +37,13 @@ Update the `metadata.labels` in the `prometheus-rules.yaml` file to match that o
 ```bash
 kubectl apply -f rules/prometheus-rules.yaml
 ```
+
+⚠️ **CRITICAL: Configure kube-stat-metrics to catch these labels
+
+```
+app.kubernetes.io/name,app.kubernetes.io/instance,gitlab/job-name,gitlab/project
+```
+
 
 ### 2. Import the Grafana Dashboard
 
