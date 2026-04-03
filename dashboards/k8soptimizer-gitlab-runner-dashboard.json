@@ -343,14 +343,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  max_over_time(gitlab_job_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_CPU"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  max_over_time(gitlab_job_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n)",
           "format": "table",
           "instant": true,
           "refId": "E"
@@ -371,14 +371,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  max_over_time(gitlab_job_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_MEM"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  gitlab_job_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}\n)",
+          "expr": "max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (\n  max_over_time(gitlab_job_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_gitlab_project=~\"$project\", label_gitlab_job_name=~\"$job_name\", container=~\"$container\"}[$long_period])\n)",
           "format": "table",
           "instant": true,
           "refId": "F"
@@ -1162,7 +1162,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
