@@ -39,11 +39,9 @@ def build_promql_filters(clusters, namespaces, extra_labels=None):
             labels.append(f'{k}="{v}"')
 
     if clusters:
-        # e.g., cluster=~"cluster-A|cluster-B"
         labels.append(f'cluster=~"{"|".join(clusters)}"')
 
     if namespaces:
-        # e.g., namespace=~"kube-system|default"
         labels.append(f'namespace=~"{"|".join(namespaces)}"')
 
     if labels:
@@ -52,10 +50,10 @@ def build_promql_filters(clusters, namespaces, extra_labels=None):
 
 
 # ==========================================
-# 2. Fetch Metrics
+# 2. Fetch Metrics (Updated for Recording Rules)
 # ==========================================
 def gather_cluster_metrics(clusters, namespaces):
-    print("Gathering CPU and Memory metrics from Prometheus...")
+    print("Gathering metrics using pre-calculated Recording Rules...")
 
     # Build the dynamic filter strings
     base_filters = build_promql_filters(clusters, namespaces)
@@ -64,50 +62,32 @@ def gather_cluster_metrics(clusters, namespaces):
 
     metrics_data = {}
 
-    # Query 1: Max CPU Usage
-    cpu_max_query = f'max(max_over_time(kube_workload_container_resource_usage_cpu_cores_max{base_filters}[{LONG_PERIOD}])) by (cluster, namespace, workload, container)'
+    # Query 1: Max CPU Usage (using the 1w recording rule)
+    cpu_max_query = f'kube_workload_container_resource_usage_cpu_cores_max:1w{base_filters}'
     for result in query_prometheus(cpu_max_query):
         labels = result['metric']
         key = f"{labels.get('cluster')}/{labels.get('namespace')}/{labels.get('workload')}/{labels.get('container')}"
         if key not in metrics_data: metrics_data[key] = {"labels": labels}
         metrics_data[key]["cpu_max_cores"] = round(float(result['value'][1]), 4)
 
-    # Query 2: Current CPU Requests
-    cpu_req_query = f"""
-    max by (cluster, namespace, workload, container) (
-      kube_pod_container_resource_requests{cpu_req_filters}
-      * on(cluster, namespace, pod) group_left(workload)
-      label_replace(
-        max by (cluster, namespace, pod) (kube_pod_info{base_filters}),
-        "workload", "$1", "pod", "^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$"
-      )
-    )
-    """
+    # Query 2: Current CPU Requests (using pre-joined recording rule)
+    cpu_req_query = f'kube_workload_container_resource_requests{cpu_req_filters}'
     for result in query_prometheus(cpu_req_query):
         labels = result['metric']
         key = f"{labels.get('cluster')}/{labels.get('namespace')}/{labels.get('workload')}/{labels.get('container')}"
         if key in metrics_data:
             metrics_data[key]["cpu_request_cores"] = round(float(result['value'][1]), 4)
 
-    # Query 3: Max Memory Usage (in Bytes)
-    mem_max_query = f'max(max_over_time(kube_workload_container_resource_usage_memory_bytes_max{base_filters}[{LONG_PERIOD}])) by (cluster, namespace, workload, container)'
+    # Query 3: Max Memory Usage (using the 1w recording rule)
+    mem_max_query = f'kube_workload_container_resource_usage_memory_bytes_max:1w{base_filters}'
     for result in query_prometheus(mem_max_query):
         labels = result['metric']
         key = f"{labels.get('cluster')}/{labels.get('namespace')}/{labels.get('workload')}/{labels.get('container')}"
         if key not in metrics_data: metrics_data[key] = {"labels": labels}
         metrics_data[key]["memory_max_mib"] = round(float(result['value'][1]) / (1024 * 1024), 2)
 
-    # Query 4: Current Memory Requests (in Bytes)
-    mem_req_query = f"""
-    max by (cluster, namespace, workload, container) (
-      kube_pod_container_resource_requests{mem_req_filters}
-      * on(cluster, namespace, pod) group_left(workload)
-      label_replace(
-        max by (cluster, namespace, pod) (kube_pod_info{base_filters}),
-        "workload", "$1", "pod", "^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$"
-      )
-    )
-    """
+    # Query 4: Current Memory Requests (using pre-joined recording rule)
+    mem_req_query = f'kube_workload_container_resource_requests{mem_req_filters}'
     for result in query_prometheus(mem_req_query):
         labels = result['metric']
         key = f"{labels.get('cluster')}/{labels.get('namespace')}/{labels.get('workload')}/{labels.get('container')}"
@@ -115,7 +95,7 @@ def gather_cluster_metrics(clusters, namespaces):
             metrics_data[key]["memory_request_mib"] = round(float(result['value'][1]) / (1024 * 1024), 2)
 
     # Query 5: OOM Killed Events
-    oom_query = f'max by (cluster, namespace, workload, container) (kube_workload_container_resource_usage_memory_oom_killed{base_filters})'
+    oom_query = f'kube_workload_container_resource_usage_memory_oom_killed{base_filters}'
     for result in query_prometheus(oom_query):
         labels = result['metric']
         key = f"{labels.get('cluster')}/{labels.get('namespace')}/{labels.get('workload')}/{labels.get('container')}"
@@ -149,7 +129,6 @@ def get_ai_recommendations(metrics_data):
             cpu_req = 0.0
             mem_req = 0.0
 
-        # FILTER FIXED: Using 'and' so we only drop containers that are tiny in BOTH aspects
         if mem_req <= 256.0 and cpu_req <= 0.050:
             skipped_count += 1
             continue
@@ -181,7 +160,7 @@ def get_ai_recommendations(metrics_data):
     1. Analyze the data but ONLY output the Top 10 most critical containers that need tuning (prioritize highest wasted cost / over-provisioning, or highest OOM kill risk).
     2. Format your entire response as a SINGLE Markdown table. Do not write introductory or concluding paragraphs.
     3. Use the following columns: Cluster | Namespace | Workload | Container | New CPU Req | New Mem Limit | Reason
-    4. Keep the 'Reason' column to a maximum of 5 words (e.g., "Severely over-provisioned CPU", or "High OOM risk").
+    4. Keep the 'Reason' column to a maximum of 5 words.
 
     Rules for tuning:
     - Memory is in MiB. Suggest memory limits in MiB.
@@ -198,7 +177,6 @@ def get_ai_recommendations(metrics_data):
         print("No containers met the minimum resource thresholds. Exiting.")
         return
 
-    # Using the streaming method so you don't stare at a blank screen!
     response = client.models.generate_content_stream(
         model='gemini-2.5-flash',
         contents=prompt,
