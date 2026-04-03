@@ -301,7 +301,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 381
+                "value": 187
               }
             ]
           }
@@ -318,7 +318,12 @@
         "cellHeight": "sm",
         "enablePagination": true,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Mem Req/Max Ratio"
+          }
+        ]
       },
       "pluginVersion": "12.3.1",
       "targets": [
@@ -338,14 +343,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_workload_container_resource_requests{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_CPU"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"cpu\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_workload_container_resource_limits{resource=\"cpu\", cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}\n)",
           "format": "table",
           "instant": true,
           "refId": "E"
@@ -366,14 +371,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_requests{resource=\"memory\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_workload_container_resource_requests{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}\n)",
           "format": "table",
           "instant": true,
           "refId": "REQ_MEM"
         },
         {
           "editorMode": "code",
-          "expr": "max by (namespace, workload, container) (\n  kube_pod_container_resource_limits{resource=\"memory\", cluster=~\".*$cluster.*\", namespace=~\"$namespace\", container=~\"$container\", pod=~\"^($workload).*\"} \n  * on(cluster, namespace, pod) group_left(workload) \n  label_replace(\n    max by (cluster, namespace, pod) (kube_pod_info{cluster=~\".*$cluster.*\", namespace=~\"$namespace\", pod=~\"^($workload).*\"}), \n    \"workload\", \"$1\", \"pod\", \"^(.*?)(?:-[0-9a-f]{7,10}-[0-9a-z]{5}|-[0-9a-z]{5}|-[0-9]+)?$\"\n  )\n)",
+          "expr": "max by (namespace, workload, container) (\n  kube_workload_container_resource_limits{resource=\"memory\", cluster=~\"$cluster\", namespace=~\"$namespace\", workload=~\"$workload\", container=~\"$container\"}\n)",
           "format": "table",
           "instant": true,
           "refId": "F"
@@ -415,6 +420,7 @@
               "Time 8": true,
               "Time 9": true,
               "Value #C": false,
+              "__name__": true,
               "cluster": true,
               "cluster 1": true,
               "cluster 10": true,
@@ -437,6 +443,7 @@
               "container 7": true,
               "container 8": true,
               "container 9": true,
+              "monitor_cluster": true,
               "namespace": false,
               "namespace 1": false,
               "namespace 10": true,
@@ -448,6 +455,8 @@
               "namespace 7": true,
               "namespace 8": true,
               "namespace 9": true,
+              "resource": true,
+              "thanos_ruler_replica": true,
               "workload": false,
               "workload 1": false,
               "workload 10": true,
@@ -640,7 +649,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 476
+            "y": 700
           },
           "id": 1,
           "options": {
@@ -757,7 +766,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 487
+            "y": 711
           },
           "id": 2,
           "options": {
@@ -899,7 +908,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 497
+            "y": 721
           },
           "id": 4,
           "options": {
@@ -964,7 +973,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 507
+            "y": 731
           },
           "id": 5,
           "options": {
@@ -1097,9 +1106,7 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1230,12 +1237,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "k8soptimizer Resource Dashboard",
   "uid": "bdgfnps",
-  "version": 10
+  "version": 11
 }
