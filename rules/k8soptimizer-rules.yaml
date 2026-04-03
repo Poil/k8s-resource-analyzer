@@ -56,7 +56,6 @@ spec:
 
   # ===============================================================
   # GROUP 2: CI/CD GitLab Runner Metrics (1m interval)
-  # Groups ephemeral pods cleanly by GitLab Project and Job Name
   # ===============================================================
   - name: gitlab-runner-record.rules
     interval: 1m
@@ -64,25 +63,25 @@ spec:
     # --- GitLab CPU Usage ---
     - record: gitlab_job_container_resource_usage_cpu_cores_min
       expr: |
-        min by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        min by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="gitlab-runner"}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_cpu_cores_avg
       expr: |
-        avg by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        avg by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="gitlab-runner"}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_cpu_cores_max
       expr: |
-        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="gitlab-runner"}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_cpu_cores_sum
       expr: |
-        sum by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        sum by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="gitlab-runner"}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
@@ -90,25 +89,25 @@ spec:
     # --- GitLab Memory Usage ---
     - record: gitlab_job_container_resource_usage_memory_bytes_min
       expr: |
-        min by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        min by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           container_memory_working_set_bytes{namespace="gitlab-runner", container!=""}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_memory_bytes_avg
       expr: |
-        avg by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        avg by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           container_memory_working_set_bytes{namespace="gitlab-runner", container!=""}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_memory_bytes_max
       expr: |
-        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        max by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           container_memory_working_set_bytes{namespace="gitlab-runner", container!=""}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_usage_memory_bytes_sum
       expr: |
-        sum by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        sum by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           container_memory_working_set_bytes{namespace="gitlab-runner", container!=""}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
@@ -116,21 +115,21 @@ spec:
     # --- GitLab Stability & Specs ---
     - record: gitlab_job_container_resource_usage_memory_oom_killed
       expr: |
-        sum by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container) (
+        sum by (namespace, label_gitlab_project, label_gitlab_job_name, container) (
           kube_pod_container_status_terminated_reason{job="kube-state-metrics", reason="OOMKilled", namespace="gitlab-runner"}
           * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_requests
       expr: |
-        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container, resource) (
+        max by (namespace, label_gitlab_project, label_gitlab_job_name, container, resource) (
           kube_pod_container_resource_requests{namespace="gitlab-runner"}
-          * on(cluster, namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
+          * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
     - record: gitlab_job_container_resource_limits
       expr: |
-        max by (cluster, namespace, label_gitlab_project, label_gitlab_job_name, container, resource) (
+        max by (namespace, label_gitlab_project, label_gitlab_job_name, container, resource) (
           kube_pod_container_resource_limits{namespace="gitlab-runner"}
-          * on(cluster, namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
+          * on(namespace, pod) group_left(label_gitlab_project, label_gitlab_job_name) kube_pod_labels{label_gitlab_job_name!=""}
         )
 
   # ===============================================================
